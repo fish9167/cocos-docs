@@ -1,0 +1,27 @@
+name: Check Markdown links
+
+on: pull_request_target
+
+jobs:
+  markdown-link-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Link Checker
+      id: lychee
+      uses: lycheeverse/lychee-action@v1.4.1
+    
+    - id: get-comment-body
+      run: |
+        body="$(cat ./lychee/out.md)"
+        body="${body//'%'/'%25'}"
+        body="${body//$'\n'/'%0A'}"
+        body="${body//$'\r'/'%0D'}" 
+        echo "::set-output name=body::$body"
+    - name: Create comment
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        #body: ${{ steps.get-comment-body.outputs.body }}
+        body: $(cat ./lychee/out.md)
