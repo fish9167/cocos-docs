@@ -8,14 +8,11 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: check 
-      run: |
-        version=`jq '.[version][name]' ./zh/book.json`
-        echo ${version}
-
     - name: Link Checker
       id: lychee
       uses: lycheeverse/lychee-action@v1.4.1
+      with:
+        config-file: 'mlc_config.json'
     
     - id: get-comment-body
       run: |
@@ -24,6 +21,7 @@ jobs:
         body="${body//$'\n'/'%0A'}"
         body="${body//$'\r'/'%0D'}" 
         echo "::set-output name=body::$body"
+
     - name: Create comment
       uses: peter-evans/create-or-update-comment@v2
       with:
