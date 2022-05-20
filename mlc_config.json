@@ -6,7 +6,7 @@
   ],
   "replacementPatterns": [
     {
-      "pattern": "__APIDOC__",
+      "pattern": "*__APIDOC__",
       "replacement": "https://docs.cocos.com/creator/v3.4/api"
     }
   ],
